@@ -1,0 +1,26 @@
+pipeline {
+    agent any {
+
+        stages {
+            stage ('plan') {
+                steps {
+                    git url: 'https://github.com/KSecOn/jenkins.git'
+                    sh 'echo "The plan is: "'
+                    sh 'terraform plan'
+                }
+            }
+            stage ("build") {
+                steps {
+                    sh 'echo "Building project..."'
+                    sh 'terraform init'
+                    sh 'terraform apply -auto-approve'
+                }
+            }
+            stage ("conclusion") {
+                steps {
+                    sh 'echo "The building of infraestructure are finished :)"'
+                }
+            }            
+        }
+    }
+}
